@@ -1,0 +1,48 @@
+scalar Date
+
+enum AccountType {
+  Savings
+  Checking
+}
+
+type Account {
+  _id: ID!
+  holder: String!
+  name: String!
+  bank: String!
+  branch: String!
+  account_type: AccountType!
+  account_number: String!
+  employee_number: String!
+  last_update: Date!
+}
+
+type Query {
+  all: [Account]
+}
+
+input AccountCreateInput {
+  holder: String!
+  name: String!
+  bank: String!
+  branch: String!
+  account_type: AccountType!
+  account_number: String!
+  employee_number: String!
+}
+
+input AccountEditInput {
+  holder: String
+  name: String
+  bank: String
+  branch: String
+  account_type: AccountType
+  account_number: String
+  employee_number: String
+}
+
+type Mutation {
+  add(account: AccountCreateInput): Account
+  edit(id: ID!, account: AccountEditInput): Account
+  remove(id: ID!): Account
+}
