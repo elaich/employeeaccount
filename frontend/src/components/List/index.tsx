@@ -8,8 +8,10 @@ import {
   TableRow,
   TableCell,
   Checkbox,
+  IconButton,
 } from '@material-ui/core';
 
+import EditIcon from '@material-ui/icons/Edit';
 import {Account} from '../../model/Account';
 import {TableToolbar} from './TableToolbar';
 
@@ -18,10 +20,11 @@ interface ListProps {
   onSelect(id: string): void;
   isSelected(id: string): boolean;
   deleteSelected(): void;
+  open(account?: Account): void;
 }
 
 export const List = (props: ListProps) => {
-  const {accounts, onSelect, isSelected, deleteSelected} = props;
+  const {accounts, onSelect, isSelected, deleteSelected, open} = props;
   return (
     <Paper>
       <TableToolbar deleteSelected={deleteSelected} />
@@ -37,6 +40,7 @@ export const List = (props: ListProps) => {
             <TableCell align="right">Account number</TableCell>
             <TableCell align="right">Employee number</TableCell>
             <TableCell align="right">Last Update</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,6 +52,7 @@ export const List = (props: ListProps) => {
                 key={account._id}
                 onSelect={onSelect}
                 checked={checked}
+                open={open}
               />
             );
           })}
@@ -62,9 +67,10 @@ interface AccountRowProps {
   onSelect(id: string): void;
   key: string;
   checked: boolean;
+  open(account?: Account): void;
 }
 
-export const AccountRow = ({account, onSelect, checked}: AccountRowProps) => (
+export const AccountRow = ({account, onSelect, checked, open}: AccountRowProps) => (
   <TableRow onClick={() => onSelect(account._id)}>
     <TableCell padding="checkbox">
       <Checkbox checked={checked} />
@@ -77,5 +83,10 @@ export const AccountRow = ({account, onSelect, checked}: AccountRowProps) => (
     <TableCell align="right">{account.account_number}</TableCell>
     <TableCell align="right">{account.employee_number}</TableCell>
     <TableCell align="right">{account.last_update.toString()}</TableCell>
+    <TableCell align="center">
+      <IconButton aria-label="Delete" onClick={() => open(account)}>
+        <EditIcon />
+      </IconButton>
+    </TableCell>
   </TableRow>
 );

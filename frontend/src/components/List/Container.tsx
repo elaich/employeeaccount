@@ -10,6 +10,7 @@ interface ContainerProps {
   fetchAll(): Promise<Array<Account>>;
   remove(id: string): Promise<Account>;
   accounts: Array<Account>;
+  open(account: Account): void;
 }
 
 interface ContainerState {
@@ -33,6 +34,7 @@ class Container extends React.Component<ContainerProps, ContainerState> {
         onSelect={this.handleClick}
         isSelected={this.isSelected}
         deleteSelected={this.deleteSelected}
+        open={this.props.open}
       />
     );
   }

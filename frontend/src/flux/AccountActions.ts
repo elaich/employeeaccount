@@ -43,7 +43,7 @@ export const AccountActions = (
     dispatch(updateAccounts(accounts));
   };
 
-  const update = (id: string, account: Account) => async (dispatch: any) => {
+  const update = (account: Account, id: string) => async (dispatch: any) => {
     const updated = await graphQLClient.update(id, account);
     dispatch(updateAccount(id, updated));
   };

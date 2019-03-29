@@ -30,10 +30,14 @@ const graphqlClient = {
     const query = `
       mutation Edit($id: ID!, $account: AccountEditInput!) {
         edit(id: $id, account: $account) {
-          _id
+           _id
           holder
           name
           bank
+          branch
+          account_type
+          account_number
+          employee_number
           last_update
         }
       }

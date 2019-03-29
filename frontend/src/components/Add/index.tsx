@@ -46,9 +46,10 @@ interface PropsI {
     name: string,
   ): (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   data: AccountCreateInput;
-  create(account: AccountCreateInput): Promise<Account>;
+  create(account: AccountCreateInput, id?: string) : Promise<Account>;
   close(): void;
   classes: any;
+  account?: Account;
 }
 
 class AddAccountStepper extends React.Component<PropsI, StateI> {
@@ -60,7 +61,10 @@ class AddAccountStepper extends React.Component<PropsI, StateI> {
     const {activeStep} = this.state;
     const steps = getSteps();
     if (activeStep === steps.length - 1) {
-      const {create, data, close} = this.props;
+      const {create, data, close, account} = this.props;
+      if (account) {
+        return create(data, account._id).then(() => close());
+      }
       create(data).then(() => close());
       return;
     }
