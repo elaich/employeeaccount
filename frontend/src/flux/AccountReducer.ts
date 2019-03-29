@@ -3,6 +3,7 @@ import { Account } from '../model/Account'
 import { ActionI } from './AccountActions'
 
 export type State = Array<Account>
+
 export const AccountReducer = (state: State = [], action: ActionI) => {
   switch (action.type) {
     case ADD_ACCOUNT:

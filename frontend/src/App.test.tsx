@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+// test file
+// j
+import { shallow, mount, render } from 'enzyme';
+import App from './App'
+import * as React from 'react'
+import './setupTests'
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+it ('shallow render', () => {
+  const wrapper = shallow(<App />);
+})
