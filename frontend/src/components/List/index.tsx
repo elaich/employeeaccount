@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import {
   Paper,
   Table,
@@ -12,10 +11,9 @@ import {
   Tooltip,
   TableSortLabel,
 } from '@material-ui/core';
-
-import EditIcon from '@material-ui/icons/Edit';
 import {Account} from '../../model/Account';
 import {TableToolbar} from './TableToolbar';
+import { AccountRow } from './AccountRow';
 
 interface ListProps {
   accounts: Array<Account>;
@@ -26,7 +24,7 @@ interface ListProps {
   sort(orderby: string, order: string): void;
 }
 
-const columns = [
+export const columns = [
   {prop: 'holder', label: "Account Holder's name"},
   {prop: 'name', label: 'Employee name'},
   {prop: 'bank', label: 'Bank name'},
@@ -102,37 +100,3 @@ export class List extends React.Component<ListProps> {
     );
   }
 }
-
-interface AccountRowProps {
-  account: Account;
-  onSelect(id: string): void;
-  key: string;
-  checked: boolean;
-  open(account?: Account): void;
-}
-
-export const AccountRow = ({
-  account,
-  onSelect,
-  checked,
-  open,
-}: AccountRowProps) => (
-  <TableRow onClick={() => onSelect(account._id)}>
-    <TableCell padding="checkbox">
-      <Checkbox checked={checked} />
-    </TableCell>
-    <TableCell align="left">{account.holder}</TableCell>
-    <TableCell align="left">{account.name}</TableCell>
-    <TableCell align="left">{account.bank}</TableCell>
-    <TableCell align="left">{account.branch}</TableCell>
-    <TableCell align="left">{account.account_type}</TableCell>
-    <TableCell align="right">{account.account_number.padStart(15, '0')}</TableCell>
-    <TableCell align="right">{account.employee_number.padStart(7, '0')}</TableCell>
-    <TableCell align="left">{account.last_update.toString()}</TableCell>
-    <TableCell align="center">
-      <IconButton aria-label="Delete" onClick={() => open(account)}>
-        <EditIcon />
-      </IconButton>
-    </TableCell>
-  </TableRow>
-);
