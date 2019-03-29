@@ -2,7 +2,7 @@ import {GraphQLClient} from 'graphql-request';
 import { AccountEditInput } from '../model/AccountEditInput'
 import { Account } from '../model/Account'
 
-const client = new GraphQLClient('http://localhost:3000/graphql');
+const client = new GraphQLClient('/graphql');
 
 const graphqlClient = {
   all: async () => {
