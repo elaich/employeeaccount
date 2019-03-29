@@ -16,70 +16,40 @@ const toolbarStyles = (theme: any) => ({
   root: {
     paddingRight: theme.spacing.unit,
   },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+  highlight: {
+    color: theme.palette.secondary.main,
+    backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+  },
   spacer: {
     flex: '1 1 100%',
   },
   actions: {
     color: theme.palette.text.secondary,
   },
-  title: {
-    flex: '0 0 auto',
-  },
 });
 
 interface TableToolbarProps extends WithStyles<typeof toolbarStyles> {
-  numSelected: number;
+  deleteSelected(): void;
 }
 
-const TableToolbar = withStyles(toolbarStyles)(
-  (props: TableToolbarProps) => {
-    const {numSelected, classes} = props;
+const TableToolbar = withStyles(toolbarStyles)((props: TableToolbarProps) => {
+  const {deleteSelected, classes} = props;
 
-    return (
-      <Toolbar
-        className={classNames(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        })}>
-        <div className={classes.title}>
-          {numSelected > 0 ? (
-            <Typography color="inherit" variant="subtitle1">
-              {numSelected} selected
-            </Typography>
-          ) : (
-            <Typography variant="h6" id="tableTitle">
-              Nutrition
-            </Typography>
-          )}
-        </div>
-        <div className={classes.spacer} />
-        <div className={classes.actions}>
-          {numSelected > 0 ? (
-            <Tooltip title="Delete">
-              <IconButton aria-label="Delete">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          ) : (
-            <Tooltip title="Filter list">
-              <IconButton aria-label="Filter list">
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
-      </Toolbar>
-    );
-  },
-);
+  return (
+    <Toolbar
+      className={classNames(classes.root, {
+        [classes.highlight]: true,
+      })}>
+      <div className={classes.spacer} />
+      <div className={classes.actions}>
+        <Tooltip title="Delete">
+          <IconButton onClick={deleteSelected} aria-label="Delete">
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
+    </Toolbar>
+  );
+});
 
 export {TableToolbar};

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {withStyles} from '@material-ui/core/styles';
 
 import {
   Paper,
@@ -11,43 +10,64 @@ import {
   Checkbox,
 } from '@material-ui/core';
 
-import {lighten} from '@material-ui/core/styles/colorManipulator';
-
 import {Account} from '../../model/Account';
-import { TableToolbar } from './TableToolbar'
+import {TableToolbar} from './TableToolbar';
 
-export const List = ({accounts}: {accounts: Array<Account>}) => {
+interface ListProps {
+  accounts: Array<Account>;
+  onSelect(id: string): void;
+  isSelected(id: string): boolean;
+  deleteSelected(): void;
+}
+
+export const List = (props: ListProps) => {
+  const {accounts, onSelect, isSelected, deleteSelected} = props;
   return (
     <Paper>
-    <TableToolbar numSelected={2} />
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell />
-          <TableCell>Account Holder's name</TableCell>
-          <TableCell align="right">Employee name</TableCell>
-          <TableCell align="right">Bank name</TableCell>
-          <TableCell align="right">Branch name</TableCell>
-          <TableCell align="right">Account type</TableCell>
-          <TableCell align="right">Account number</TableCell>
-          <TableCell align="right">Employee number</TableCell>
-          <TableCell align="right">Last Update</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {accounts.map(account => (
-          <AccountRow account={account} key={account._id} />
-        ))}
-      </TableBody>
-    </Table>
+      <TableToolbar deleteSelected={deleteSelected} />
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell>Account Holder's name</TableCell>
+            <TableCell align="right">Employee name</TableCell>
+            <TableCell align="right">Bank name</TableCell>
+            <TableCell align="right">Branch name</TableCell>
+            <TableCell align="right">Account type</TableCell>
+            <TableCell align="right">Account number</TableCell>
+            <TableCell align="right">Employee number</TableCell>
+            <TableCell align="right">Last Update</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {accounts.map(account => {
+            const checked = isSelected(account._id);
+            return (
+              <AccountRow
+                account={account}
+                key={account._id}
+                onSelect={onSelect}
+                checked={checked}
+              />
+            );
+          })}
+        </TableBody>
+      </Table>
     </Paper>
   );
 };
 
-export const AccountRow = ({account}: {account: Account}) => (
-  <TableRow>
+interface AccountRowProps {
+  account: Account;
+  onSelect(id: string): void;
+  key: string;
+  checked: boolean;
+}
+
+export const AccountRow = ({account, onSelect, checked}: AccountRowProps) => (
+  <TableRow onClick={() => onSelect(account._id)}>
     <TableCell padding="checkbox">
-      <Checkbox />
+      <Checkbox checked={checked} />
     </TableCell>
     <TableCell>{account.holder}</TableCell>
     <TableCell align="right">{account.name}</TableCell>
@@ -59,4 +79,3 @@ export const AccountRow = ({account}: {account: Account}) => (
     <TableCell align="right">{account.last_update.toString()}</TableCell>
   </TableRow>
 );
-
