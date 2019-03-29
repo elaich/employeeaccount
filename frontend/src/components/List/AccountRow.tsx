@@ -37,7 +37,7 @@ export const AccountRow = (props: AccountRowProps) => {
         <Checkbox checked={checked} />
       </TableCell>
       {columns.map(column => (
-        <TableCell align={column.numeric ? 'right' : 'left'}>
+        <TableCell key={column.prop} align={column.numeric ? 'right' : 'left'}>
           {mappedAccount[column.prop]}
         </TableCell>
       ))}

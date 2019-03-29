@@ -64,7 +64,7 @@ export class List extends React.Component<ListProps> {
             <TableRow>
               <TableCell />
               {columns.map(column => (
-                <TableCell align={column.numeric ? 'right': 'left'} sortDirection="asc">
+                <TableCell key={column.prop} align={column.numeric ? 'right': 'left'} sortDirection="asc">
                   <Tooltip
                     title="Sort"
                     placement={'bottom-start'}
