@@ -26,6 +26,27 @@ const graphqlClient = {
     return all;
   },
 
+  search: async (from?: number, to?: number) => {
+    const query = `
+      query Search($searchInput: SearchInput!) {
+        search(searchInput: $searchInput) {
+          _id
+          holder
+          name
+          bank
+          branch
+          account_type
+          account_number
+          employee_number
+          last_update
+        }
+      }
+    `;
+
+    const {search} = await client.request(query, {searchInput: {from, to}});
+    return search;
+  },
+
   update: async (id: string, account: AccountEditInput): Promise<Account> => {
     const query = `
       mutation Edit($id: ID!, $account: AccountEditInput!) {

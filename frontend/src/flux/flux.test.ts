@@ -40,6 +40,7 @@ const graphQLClientMock = {
   update: jest.fn().mockReturnValue(accounts[1]),
   remove: jest.fn().mockReturnValue(accounts[1]),
   create: jest.fn().mockReturnValue(accounts[1]),
+  search: jest.fn().mockReturnValue(accounts),
 };
 
 describe('AccountReducer', () => {
@@ -134,5 +135,17 @@ describe('Store', () => {
 
     expect(state.length).toBe(1);
     expect(state[0]).toEqual(accounts[1]);
+  });
+
+  it('Updates when we search accounts', async () => {
+    const accountActions: AccountActionsI = AccountActions(graphQLClientMock);
+    await store.dispatch(accountActions.search(10, 1000));
+    const state = store.getState();
+
+    // Called graphQLClient Mock
+    expect(graphQLClientMock.search.mock.calls[0][0]).toEqual(10);
+    expect(graphQLClientMock.search.mock.calls[0][1]).toEqual(1000);
+
+    expect(state.length).toBe(2);
   });
 });

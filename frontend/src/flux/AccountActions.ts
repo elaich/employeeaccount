@@ -15,6 +15,7 @@ export interface AccountGraphQLClientI {
   update(id: string, account: AccountEditInput): Promise<Account>;
   remove(id: string): Promise<Account>;
   create(account: AccountCreateInput): Promise<Account>;
+  search(from?: number, to?: number): Promise<Array<Account>>;
 }
 
 export interface ActionI {
@@ -49,6 +50,11 @@ export const AccountActions = (graphQLClient: AccountGraphQLClientI) => {
     dispatch(updateAccounts(accounts));
   };
 
+  const search = (from?: number, to?: number) => async (dispatch: any) => {
+    const accounts = await graphQLClient.search(from, to)
+    dispatch(updateAccounts(accounts));
+  };
+
   const update = (account: Account, id: string) => async (dispatch: any) => {
     const updated = await graphQLClient.update(id, account);
     dispatch(updateAccount(id, updated));
@@ -70,5 +76,6 @@ export const AccountActions = (graphQLClient: AccountGraphQLClientI) => {
     remove,
     create,
     sort,
+    search,
   };
 };
