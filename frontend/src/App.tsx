@@ -5,6 +5,7 @@ import './App.css';
 import ListContainer from './components/List/Container';
 import AddAccountContainer from './components/Add/Container';
 import EditAccountContainer from './components/Add/EditContainer';
+import SearchContainer from './components/Search/Container';
 import AddButton from './components/Add/AddButton';
 import {accounts} from './fixtures';
 import {Provider} from 'react-redux';
@@ -39,6 +40,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        <SearchContainer />
         <ListContainer open={this.openEditModal} />
         <Modal open={this.state.create_modal_open}>
           <AddAccountContainer close={this.toggleCreateModal} />
