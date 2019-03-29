@@ -3,11 +3,12 @@ import {
   UPDATE_ACCOUNT,
   DELETE_ACCOUNT,
   ADD_ACCOUNT,
+  SORT_ACCOUNTS,
 } from './AccountActionsTypes';
 
-import { Account } from '../model/Account'
-import { AccountEditInput } from '../model/AccountEditInput'
-import { AccountCreateInput } from '../model/AccountCreateInput'
+import {Account} from '../model/Account';
+import {AccountEditInput} from '../model/AccountEditInput';
+import {AccountCreateInput} from '../model/AccountCreateInput';
 
 export interface AccountGraphQLClientI {
   all(): Promise<Array<Account>>;
@@ -21,12 +22,12 @@ export interface ActionI {
   data: any;
 }
 
-export const AccountActions = (
-  graphQLClient: AccountGraphQLClientI,
-) => {
-
+export const AccountActions = (graphQLClient: AccountGraphQLClientI) => {
   // Actions Creators
-  const updateAccounts = (accounts: Array<Account>) => ({type: UPDATE_ACCOUNTS, data: accounts});
+  const updateAccounts = (accounts: Array<Account>) => ({
+    type: UPDATE_ACCOUNTS,
+    data: accounts,
+  });
 
   const updateAccount = (id: string, account: Account) => ({
     type: UPDATE_ACCOUNT,
@@ -36,6 +37,11 @@ export const AccountActions = (
   const deleteAccount = (id: string) => ({type: DELETE_ACCOUNT, data: id});
 
   const addAccount = (account: Account) => ({type: ADD_ACCOUNT, data: account});
+
+  const sort = (orderby: string, order: string) => ({
+    type: SORT_ACCOUNTS,
+    data: {orderby, order},
+  });
 
   // Async Actions
   const fetchAll = () => async (dispatch: any) => {
@@ -63,5 +69,6 @@ export const AccountActions = (
     update,
     remove,
     create,
+    sort,
   };
 };

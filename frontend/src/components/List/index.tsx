@@ -9,6 +9,8 @@ import {
   TableCell,
   Checkbox,
   IconButton,
+  Tooltip,
+  TableSortLabel,
 } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
@@ -21,46 +23,85 @@ interface ListProps {
   isSelected(id: string): boolean;
   deleteSelected(): void;
   open(account?: Account): void;
+  sort(orderby: string, order: string): void;
 }
 
-export const List = (props: ListProps) => {
-  const {accounts, onSelect, isSelected, deleteSelected, open} = props;
-  return (
-    <Paper>
-      <TableToolbar deleteSelected={deleteSelected} />
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell>Account Holder's name</TableCell>
-            <TableCell align="right">Employee name</TableCell>
-            <TableCell align="right">Bank name</TableCell>
-            <TableCell align="right">Branch name</TableCell>
-            <TableCell align="right">Account type</TableCell>
-            <TableCell align="right">Account number</TableCell>
-            <TableCell align="right">Employee number</TableCell>
-            <TableCell align="right">Last Update</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {accounts.map(account => {
-            const checked = isSelected(account._id);
-            return (
-              <AccountRow
-                account={account}
-                key={account._id}
-                onSelect={onSelect}
-                checked={checked}
-                open={open}
-              />
-            );
-          })}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
-};
+const columns = [
+  {prop: 'holder', label: "Account Holder's name"},
+  {prop: 'name', label: 'Employee name'},
+  {prop: 'bank', label: 'Bank name'},
+  {prop: 'branch', label: 'Branch name'},
+  {prop: 'account_type', label: 'Account type'},
+  {prop: 'account_number', label: 'Account number'},
+  {prop: 'employee_number', label: 'Employee number'},
+  {prop: 'last_update', label: 'Last Update'},
+];
+
+export class List extends React.Component<ListProps> {
+  state = {
+    orderby: 'holder',
+    order: 'desc',
+  };
+
+  sort = (property: string) => () => {
+    const orderby = property;
+    let order = 'desc';
+
+    if (this.state.orderby === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+
+    this.props.sort(orderby, order);
+    this.setState({ order, orderby });
+  };
+
+  render() {
+    const {accounts, onSelect, isSelected, deleteSelected, open} = this.props;
+    const {order, orderby} = this.state;
+    return (
+      <Paper>
+        <TableToolbar deleteSelected={deleteSelected} />
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              {columns.map(column => (
+                <TableCell sortDirection="asc">
+                  <Tooltip
+                    title="Sort"
+                    placement={'bottom-start'}
+                    enterDelay={300}>
+                    <TableSortLabel
+                      direction={order === 'desc'? 'desc' : 'asc'}
+                      active={orderby === column.prop}
+                      onClick={this.sort(column.prop)}>
+                      {column.label}
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+              ))}
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {accounts.map(account => {
+              const checked = isSelected(account._id);
+              return (
+                <AccountRow
+                  account={account}
+                  key={account._id}
+                  onSelect={onSelect}
+                  checked={checked}
+                  open={open}
+                />
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
+}
 
 interface AccountRowProps {
   account: Account;
@@ -70,7 +111,12 @@ interface AccountRowProps {
   open(account?: Account): void;
 }
 
-export const AccountRow = ({account, onSelect, checked, open}: AccountRowProps) => (
+export const AccountRow = ({
+  account,
+  onSelect,
+  checked,
+  open,
+}: AccountRowProps) => (
   <TableRow onClick={() => onSelect(account._id)}>
     <TableCell padding="checkbox">
       <Checkbox checked={checked} />

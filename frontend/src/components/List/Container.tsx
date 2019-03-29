@@ -11,6 +11,7 @@ interface ContainerProps {
   remove(id: string): Promise<Account>;
   accounts: Array<Account>;
   open(account: Account): void;
+  sort(orderby: string, order: string): void;
 }
 
 interface ContainerState {
@@ -35,6 +36,7 @@ class Container extends React.Component<ContainerProps, ContainerState> {
         isSelected={this.isSelected}
         deleteSelected={this.deleteSelected}
         open={this.props.open}
+        sort={this.props.sort}
       />
     );
   }
@@ -72,6 +74,8 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     fetchAll: () => dispatch(accountActions.fetchAll()),
     remove: (id: string) => dispatch(accountActions.remove(id)),
+    sort: (orderby: string, order: string) =>
+      dispatch(accountActions.sort(orderby, order)),
   };
 };
 

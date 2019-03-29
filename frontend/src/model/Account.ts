@@ -8,4 +8,5 @@ export interface Account {
   account_number: string;
   employee_number: string;
   last_update: Date;
+  [key: string]: string | Date;
 }

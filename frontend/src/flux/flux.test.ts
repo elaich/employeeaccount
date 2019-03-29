@@ -1,9 +1,10 @@
-import {AccountActions} from './AccountActions'
+import {AccountActions} from './AccountActions';
 import {
   ADD_ACCOUNT,
   DELETE_ACCOUNT,
   UPDATE_ACCOUNTS,
   UPDATE_ACCOUNT,
+  SORT_ACCOUNTS,
 } from './AccountActionsTypes';
 
 import {AccountReducer} from './AccountReducer';
@@ -17,8 +18,8 @@ const accounts = [
     bank: 'BMCE',
     branch: 'ATTIJARI',
     account_type: 'Checking',
-    account_number: '000989432983434',
-    employee_number: '0000342',
+    account_number: '989432983434',
+    employee_number: '342',
     last_update: new Date(),
   },
   {
@@ -28,8 +29,8 @@ const accounts = [
     bank: 'BMCE',
     branch: 'ATTIJARI',
     account_type: 'Checking',
-    account_number: '000989432983434',
-    employee_number: '0000342',
+    account_number: '989432983434',
+    employee_number: '32',
     last_update: new Date(),
   },
 ];
@@ -42,7 +43,6 @@ const graphQLClientMock = {
 };
 
 describe('AccountReducer', () => {
-
   it('Listens to Remove Account Action', () => {
     const result = AccountReducer(accounts, {type: DELETE_ACCOUNT, data: '2'});
     expect(result.length).toEqual(1);
@@ -63,41 +63,63 @@ describe('AccountReducer', () => {
     expect(result.length).toEqual(1);
     expect(result[0]).toEqual(accounts[1]);
   });
+
+  it('Listens to Sort Accounts Action by name', () => {
+    const result = AccountReducer(accounts, {
+      type: SORT_ACCOUNTS,
+      data: {
+        order: 'desc',
+        orderby: 'name',
+      },
+    });
+    expect(result[0]).toEqual(accounts[1]);
+  });
+
+  it('Listens to Sort Accounts Action by employee number', () => {
+    const result = AccountReducer(accounts, {
+      type: SORT_ACCOUNTS,
+      data: {
+        order: 'asc',
+        orderby: 'employee_number',
+      }
+    });
+    expect(result[0]).toEqual(accounts[1]);
+  });
 });
 
 describe('Store', () => {
   it('Has the initial state', () => {
     const initialState = store.getState();
     expect(initialState.length).toBe(0);
-  })
+  });
 
   it('Updates when we fetch all the accounts', async () => {
     const accountActions: AccountActionsI = AccountActions(graphQLClientMock);
-    await store.dispatch(accountActions.fetchAll())
+    await store.dispatch(accountActions.fetchAll());
     const state = store.getState();
     expect(state.length).toBe(1);
-  })
+  });
 
   it('Updates when we update an account', async () => {
     const accountActions: AccountActionsI = AccountActions(graphQLClientMock);
-    await store.dispatch(accountActions.update("1", accounts[1]))
+    await store.dispatch(accountActions.update(accounts[1], '1'));
     const state = store.getState();
 
     // Called graphQLClient Mock
-    expect(graphQLClientMock.update.mock.calls[0][0]).toBe("1");
+    expect(graphQLClientMock.update.mock.calls[0][0]).toBe('1');
     expect(graphQLClientMock.update.mock.calls[0][1]).toEqual(accounts[1]);
 
     expect(state.length).toBe(1);
     expect(state[0]).toEqual(accounts[1]);
-  })
+  });
 
   it('Updates when we remove an account', async () => {
     const accountActions: AccountActionsI = AccountActions(graphQLClientMock);
-    await store.dispatch(accountActions.remove("2"));
+    await store.dispatch(accountActions.remove('2'));
     const state = store.getState();
 
     // Called graphQLClient Mock
-    expect(graphQLClientMock.remove.mock.calls[0][0]).toBe("2");
+    expect(graphQLClientMock.remove.mock.calls[0][0]).toBe('2');
 
     expect(state.length).toBe(0);
   });
@@ -112,5 +134,5 @@ describe('Store', () => {
 
     expect(state.length).toBe(1);
     expect(state[0]).toEqual(accounts[1]);
-  })
-})
+  });
+});
