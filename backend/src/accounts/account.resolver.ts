@@ -21,6 +21,11 @@ export class AccountResolver {
     return await this.accountsService.search(searchInput);
   }
 
+  @Query()
+  async banks() {
+    return await this.accountsService.banks();
+  }
+
   @Mutation()
   async add(@Args('account') account: AccountCreateInput) {
     return await this.accountsService.create(account);

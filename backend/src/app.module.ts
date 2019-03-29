@@ -13,7 +13,7 @@ import { join } from 'path'
         path: join(process.cwd(), 'src/graphql.ts'),
       },
     }),
-    MongooseModule.forRoot('mongodb://localhost/account')
+    MongooseModule.forRoot('mongodb://database/account')
   ],
 })
 export class AppModule {}

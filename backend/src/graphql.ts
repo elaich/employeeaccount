@@ -47,6 +47,11 @@ export interface Account {
     last_update: Date;
 }
 
+export interface Bank {
+    name: string;
+    branches?: string[];
+}
+
 export interface IMutation {
     add(account?: AccountCreateInput): Account | Promise<Account>;
     edit(id: string, account?: AccountEditInput): Account | Promise<Account>;
@@ -56,6 +61,7 @@ export interface IMutation {
 export interface IQuery {
     all(): Account[] | Promise<Account[]>;
     search(searchInput: SearchInput): Account[] | Promise<Account[]>;
+    banks(): Bank[] | Promise<Bank[]>;
     temp__(): boolean | Promise<boolean>;
 }
 

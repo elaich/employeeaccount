@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   Account,
+  Bank,
   AccountEditInput,
   AccountCreateInput,
   SearchInput,
@@ -23,6 +24,13 @@ export class AccountsService {
 
   async findAll(): Promise<Account[]> {
     return await this.accountModel.find().exec();
+  }
+
+  async banks(): Promise<Bank[]> {
+    return await [
+      { name: 'QNB', branches: ['QNB UY', 'QNB LA'] },
+      { name: 'BMCE', branches: ['BMCE SALE', 'BMCE RAB'] },
+    ];
   }
 
   async search(searchInput: SearchInput): Promise<Account[]> {

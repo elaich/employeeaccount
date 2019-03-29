@@ -17,9 +17,15 @@ type Account {
   last_update: Date!
 }
 
+type Bank {
+  name: String!
+  branches: [String]!
+}
+
 type Query {
   all: [Account]
   search(searchInput: SearchInput!): [Account]
+  banks: [Bank]
 }
 
 input SearchInput {
