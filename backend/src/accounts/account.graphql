@@ -19,6 +19,12 @@ type Account {
 
 type Query {
   all: [Account]
+  search(searchInput: SearchInput!): [Account]
+}
+
+input SearchInput {
+  from: Int
+  to: Int
 }
 
 input AccountCreateInput {

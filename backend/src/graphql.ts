@@ -30,6 +30,11 @@ export interface AccountEditInput {
     employee_number?: string;
 }
 
+export interface SearchInput {
+    from?: number;
+    to?: number;
+}
+
 export interface Account {
     _id: string;
     holder: string;
@@ -50,6 +55,7 @@ export interface IMutation {
 
 export interface IQuery {
     all(): Account[] | Promise<Account[]>;
+    search(searchInput: SearchInput): Account[] | Promise<Account[]>;
     temp__(): boolean | Promise<boolean>;
 }
 
