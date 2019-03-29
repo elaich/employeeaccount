@@ -60,10 +60,14 @@ const graphqlClient = {
     const query = `
       mutation Add($account: AccountCreateInput!) {
         add(account: $account) {
-          _id
+           _id
           holder
           name
           bank
+          branch
+          account_type
+          account_number
+          employee_number
           last_update
         }
       }

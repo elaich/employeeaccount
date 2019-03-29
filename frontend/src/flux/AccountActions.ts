@@ -55,7 +55,7 @@ export const AccountActions = (
 
   const create = (account: Account) => async (dispatch: any) => {
     const added = await graphQLClient.create(account);
-    dispatch({type: ADD_ACCOUNT, data: account});
+    dispatch({type: ADD_ACCOUNT, data: added});
   };
 
   return {
