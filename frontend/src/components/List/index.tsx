@@ -32,15 +32,15 @@ const columns = [
   {prop: 'bank', label: 'Bank name'},
   {prop: 'branch', label: 'Branch name'},
   {prop: 'account_type', label: 'Account type'},
-  {prop: 'account_number', label: 'Account number'},
-  {prop: 'employee_number', label: 'Employee number'},
+  {prop: 'account_number', label: 'Account number', numeric: true},
+  {prop: 'employee_number', label: 'Employee number', numeric: true},
   {prop: 'last_update', label: 'Last Update'},
 ];
 
 export class List extends React.Component<ListProps> {
   state = {
-    orderby: 'holder',
-    order: 'desc',
+    orderby: '',
+    order: '',
   };
 
   sort = (property: string) => () => {
@@ -66,7 +66,7 @@ export class List extends React.Component<ListProps> {
             <TableRow>
               <TableCell />
               {columns.map(column => (
-                <TableCell sortDirection="asc">
+                <TableCell align={column.numeric ? 'right': 'left'} sortDirection="asc">
                   <Tooltip
                     title="Sort"
                     placement={'bottom-start'}
@@ -121,14 +121,14 @@ export const AccountRow = ({
     <TableCell padding="checkbox">
       <Checkbox checked={checked} />
     </TableCell>
-    <TableCell>{account.holder}</TableCell>
-    <TableCell align="right">{account.name}</TableCell>
-    <TableCell align="right">{account.bank}</TableCell>
-    <TableCell align="right">{account.branch}</TableCell>
-    <TableCell align="right">{account.account_type}</TableCell>
-    <TableCell align="right">{account.account_number}</TableCell>
-    <TableCell align="right">{account.employee_number}</TableCell>
-    <TableCell align="right">{account.last_update.toString()}</TableCell>
+    <TableCell align="left">{account.holder}</TableCell>
+    <TableCell align="left">{account.name}</TableCell>
+    <TableCell align="left">{account.bank}</TableCell>
+    <TableCell align="left">{account.branch}</TableCell>
+    <TableCell align="left">{account.account_type}</TableCell>
+    <TableCell align="right">{account.account_number.padStart(15, '0')}</TableCell>
+    <TableCell align="right">{account.employee_number.padStart(7, '0')}</TableCell>
+    <TableCell align="left">{account.last_update.toString()}</TableCell>
     <TableCell align="center">
       <IconButton aria-label="Delete" onClick={() => open(account)}>
         <EditIcon />
