@@ -26,6 +26,20 @@ const graphqlClient = {
     return all;
   },
 
+  banks: async () => {
+    const query = `
+      query Banks {
+        banks {
+          name
+          branches
+        }
+      }
+    `;
+
+    const {banks} = await client.request(query);
+    return banks;
+  },
+
   search: async (from?: number, to?: number) => {
     const query = `
       query Search($searchInput: SearchInput!) {
