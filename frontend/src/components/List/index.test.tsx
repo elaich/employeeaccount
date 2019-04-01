@@ -1,4 +1,5 @@
-import { List, AccountRow } from '.'
+import { List } from '.'
+import { AccountRow } from './AccountRow'
 import { shallow } from 'enzyme'
 import * as React from 'react'
 import {Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
